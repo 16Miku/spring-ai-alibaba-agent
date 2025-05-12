@@ -34,7 +34,10 @@ public class Assistant {
                         new QuestionAnswerAdvisor(vectorStore, SearchRequest.builder().topK(4).similarityThresholdAll().build()),
                         new SimpleLoggerAdvisor()
                 )
-                .defaultTools("getItemById")
+                .defaultTools("getItemById",
+                        "getOrderById","createOrder","updateOrderStatus",
+                        "getUserById","createUser","updateUser",
+                        "createPayment","getPaymentByOrderId","updatePaymentStatus")
                 .build();
 
 
