@@ -5,6 +5,7 @@ import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class Assistant {
 
 
 
-    public Assistant(ChatClient.Builder builder, VectorStore vectorStore, ChatMemory chatMemory ) {
+    public Assistant(ChatClient.Builder builder, VectorStore vectorStore, ChatMemory chatMemory, ToolCallbackProvider tools) {
 
         this.chatClient = builder
                 .defaultSystem("""
@@ -38,6 +39,7 @@ public class Assistant {
                         "getOrderById","createOrder","updateOrderStatus",
                         "getUserById","createUser","updateUser",
                         "createPayment","getPaymentByOrderId","updatePaymentStatus")
+                .defaultTools(tools)
                 .build();
 
 
@@ -46,7 +48,7 @@ public class Assistant {
 
 
 
-    public Flux<String> chat( String chatId , String message ) {
+    public Flux<String> stream( String chatId , String message ) {
 
         return this.chatClient
                 .prompt()
@@ -61,7 +63,19 @@ public class Assistant {
     }
 
 
+    public String chat( String chatId , String message ) {
 
+        return this.chatClient
+                .prompt()
+                .user(message)
+                .advisors(
+                        advisorSpec -> advisorSpec
+                                .param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                                .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 100)
+                )
+                .call()
+                .content();
+    }
 
 
 }

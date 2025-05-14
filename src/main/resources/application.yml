@@ -37,6 +37,27 @@ spring:
 #        completions-path: /chat/completions # 指定聊天完成接口的路径，通常与 OpenAI API 兼容。
 
 
+    # MCP (Model Context Protocol) 客户端配置
+    mcp:
+      client:
+        toolcallback:
+          enabled: true # 启用 MCP 客户端作为 Spring AI 的 ToolCallbackProvider。
+          # 这使得 Spring AI 能够通过 MCP 调用外部工具。
+
+        # Stdio 传输配置 (用于启动外部进程作为 MCP 服务器并通过标准输入/输出通信)
+        stdio:
+          # 指定 MCP 服务器配置文件路径（推荐）
+          # classpath: 指示文件位于类路径下 (通常是 src/main/resources 目录)
+          servers-configuration: classpath:/mcp-servers-config.json # 指向定义要启动的 MCP 服务器进程的 JSON 配置文件。
+
+  #        # SSE (Server-Sent Events) 传输配置 (用于连接到远程 MCP 服务器，当前注释掉未使用)
+  #        sse:
+  #          connections:
+  #            server1:
+  #              url: https://server.smithery.ai/@oneshot-engineering/mcp-webresearch/mcp?api_key=c66a1cf8-2ada-4c47-827e-56a1cf8-2ada-4c47-827e-56a568f38fe0  # 服务地址
+  #
+  #            server2:
+  #              url: https://server.smithery.ai/@smithery-ai/github/mcp?profile=precise-canidae-eF7f9V&api_key=c66a1cf8-2ada-4c47-827e-56a568f38fe0 # 服务地址
 
 
 

@@ -26,9 +26,18 @@
         <tag/>
         <url/>
     </scm>
+
+    <!-- 项目属性，用于管理版本号等 -->
     <properties>
-        <java.version>17</java.version>
+        <java.version>17</java.version> <!-- Java 版本 -->
+        <!-- Spring AI 版本 -->
+        <spring-ai.version>1.0.0-M6</spring-ai.version>
+
+        <!-- Spring AI Alibaba Starter 版本 -->
+        <spring-ai-alibaba.version>1.0.0-M6.1</spring-ai-alibaba.version>
+
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -85,7 +94,7 @@
         <dependency> <!-- 单个依赖的定义 -->
             <groupId>com.alibaba.cloud.ai</groupId> <!-- 依赖的groupId -->
             <artifactId>spring-ai-alibaba-starter</artifactId> <!-- 依赖的artifactId -->
-            <version>1.0.0-M6.1</version>
+            <version>${spring-ai-alibaba.version}</version>
             <!--这是Spring AI与阿里巴巴大模型集成的核心starter。-->
         </dependency>
 
@@ -113,9 +122,38 @@
 
 
 
+        <!-- 添加 Spring AI MCP 客户端 Starter 依赖 -->
+        <!-- 这个 Starter 提供了 MCP 客户端的核心自动配置和功能 -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-mcp-client-spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- 基于 Server-Sent Events （SSE）的 MCP 客户端实现 -->
+        <!-- 即使当前配置未使用 SSE，此依赖也提供了 SSE 传输的支持 -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-mcp-client-webflux-spring-boot-starter</artifactId>
+        </dependency>
+
 
 
     </dependencies>
+
+
+    <!-- 依赖管理，使用 Spring AI BOM (Bill of Materials) 来统一管理 Spring AI 相关依赖的版本 -->
+    <!-- 引入 BOM 可以确保所有 Spring AI 模块使用兼容的版本 -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version> 	<!-- 使用属性中定义的 Spring AI 版本-->
+                <type>pom</type> 		<!-- BOM 的类型是 pom-->
+                <scope>import</scope>	<!-- 导入 BOM 中的依赖管理-->
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
