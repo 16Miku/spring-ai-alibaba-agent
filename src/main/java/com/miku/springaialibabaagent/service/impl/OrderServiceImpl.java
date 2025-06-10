@@ -167,5 +167,60 @@ public class OrderServiceImpl implements OrderService {
             return false;
         }
     }
+
+
+
+
+    /**
+     * 获取用户历史订单
+     * @param userId
+     * @return
+     */
+    // 实现 OrderService 接口中的 getOrdersByUserId 方法
+    // 访问权限必须是 public，与接口定义一致
+    @Override // 加上 @Override 注解是个好习惯，可以帮助编译器检查是否正确实现了接口方法
+    public List<Order> getOrdersByUserId(Long userId) {
+
+        // 检查用户ID是否为空
+        if (userId == null) {
+            log.warn("User ID is null when fetching orders by user ID.");
+            return new ArrayList<>(); // 返回空列表或抛出异常，取决于业务需求
+        }
+        log.info("Fetching orders for user with ID: {}", userId);
+
+
+        // 用用户id查询所有订单号
+        List<Long> orderIds = orderMapper.selectOrderIdsByUserId(userId);
+
+        // 创建订单列表
+        List<Order> paidOrders  = new ArrayList<>();
+
+        // 遍历订单号
+        for( Long orderId : orderIds ) {
+
+            // 根据订单号查询订单信息
+            Order order = getOrderById(orderId);
+
+            // 将已支付订单存入查询的订单列表
+            if( order.getStatus().equals("PAID")  ) {
+
+                paidOrders.add( order );
+            }
+
+
+        }
+
+
+        return paidOrders ;
+
+
+
+    }
+
+
+
+
+
+
 }
 

@@ -34,6 +34,15 @@ public interface OrderService {
 
     // 可以添加取消订单、查询用户订单列表等方法
     // boolean cancelOrder(Long orderId);
-    // List<Order> getUserOrders(Long userId);
+
+
+    /**
+     * 获取用户历史订单
+     * @param userId
+     * @return
+     */
+    List<Order> getOrdersByUserId(Long userId);
+
+
 }
 

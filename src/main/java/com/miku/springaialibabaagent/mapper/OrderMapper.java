@@ -4,6 +4,8 @@ package com.miku.springaialibabaagent.mapper;
 import com.miku.springaialibabaagent.pojo.Order;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * 订单数据访问接口
  */
@@ -42,4 +44,15 @@ public interface OrderMapper {
     // 示例：根据用户ID查询订单列表（如果需要）
     // @Select("SELECT id, user_id, total_amount, status, create_time, update_time FROM orders WHERE user_id = #{userId}")
     // List<Order> selectByUserId(@Param("userId") Long userId);
+
+
+    /**
+     * 根据用户id查询所有订单id
+     * @param userId
+     * @return
+     */
+    @Select("SELECT id FROM orders WHERE user_id = #{user_id}")
+    List<Long> selectOrderIdsByUserId( @Param("user_id") Long userId );
+
+
 }

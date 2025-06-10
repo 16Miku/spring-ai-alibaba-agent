@@ -416,5 +416,41 @@ public class CustomTools {
 
 
 
+    // 定义获取用户历史订单请求的数据结构
+    public record getUserPurchaseHistoryRequest( Long userId ){
+    }
+
+    // 定义获取用户历史订单响应的数据结构
+    // @JsonInclude(JsonInclude.Include.NON_NULL)
+    public record getUserPurchaseHistoryResponse( List<Order> orders ){
+    }
+
+    @Bean
+    @Description("获取用户历史订单")
+    public Function<getUserPurchaseHistoryRequest, getUserPurchaseHistoryResponse> getUserPurchaseHistory( ) {
+
+
+        return getUserPurchaseHistoryRequest -> {
+
+            log.info("Tool 'GetUserPurchaseHistory' called with request: {}",getUserPurchaseHistoryRequest);
+
+            List<Order> orders = orderService.getOrdersByUserId(getUserPurchaseHistoryRequest.userId);
+
+            getUserPurchaseHistoryResponse response = new getUserPurchaseHistoryResponse( orders );
+
+            log.info("Tool 'getUserPurchaseHistory' response: {}",response);
+
+            return response;
+
+
+        };
+
+    }
+
+
+
+
+
+
 
 }

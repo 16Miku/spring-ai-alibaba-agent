@@ -38,7 +38,8 @@ public class Assistant {
                 .defaultTools("getItemById",
                         "getOrderById","createOrder","updateOrderStatus",
                         "getUserById","createUser","updateUser",
-                        "createPayment","getPaymentByOrderId","updatePaymentStatus")
+                        "createPayment","getPaymentByOrderId","updatePaymentStatus",
+                        "getUserPurchaseHistory")
                 .defaultTools(tools)
                 .build();
 
